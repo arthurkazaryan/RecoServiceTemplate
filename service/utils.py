@@ -2,7 +2,11 @@ def fake_hash_password(password: str):
     return "fakehashed" + password
 
 
-MODEL_NAMES = ['homework_1']
+MODEL_NAMES = [
+    'homework_1',
+    'user_knn',
+    'popular'
+]
 
 fake_users_db = {
     "admin": {
@@ -13,4 +17,3 @@ fake_users_db = {
         "disabled": False,
     }
 }
-

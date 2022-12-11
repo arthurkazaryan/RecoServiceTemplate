@@ -9,6 +9,7 @@ from service.api.exceptions import UserNotFoundError, ModelNotFoundError
 from service.log import app_logger
 from service.models import UserInDB
 from service.utils import fake_users_db, fake_hash_password, MODEL_NAMES
+from models.main import user_knn, most_popular
 
 
 class RecoResponse(BaseModel):
@@ -76,7 +77,22 @@ async def get_reco(
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
     k_recs = request.app.state.k_recs
-    reco = list(range(k_recs))
+    if model_name == "homework_1":
+        reco = list(range(k_recs))
+    elif model_name == "user_knn":
+        if user_id in user_knn.users_mapping:
+            reco = user_knn.predict([user_id])[:10]
+        else:
+            reco = most_popular.predict([user_id], n_recs=k_recs)
+        if len(reco) < 10:
+            reco += most_popular.predict([user_id], n_recs=k_recs)
+            reco = list(set(reco))[:10]
+    elif model_name == "most_popular":
+        reco = most_popular.predict([user_id], n_recs=k_recs)
+    else:
+        raise ModelNotFoundError(
+            error_message=f"Model {model_name} is not found"
+        )
     return RecoResponse(user_id=user_id, items=reco)
 
 
