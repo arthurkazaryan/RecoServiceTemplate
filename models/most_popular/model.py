@@ -3,9 +3,7 @@ from pathlib import Path
 from ast import literal_eval
 
 import pandas as pd
-import numpy as np
 from rectools.dataset import Dataset
-from rectools.dataset.identifiers import IdMap
 
 
 class MostPopular:

@@ -9,7 +9,7 @@ from service.api.exceptions import UserNotFoundError, ModelNotFoundError
 from service.log import app_logger
 from service.models import UserInDB
 from service.utils import fake_users_db, fake_hash_password, MODEL_NAMES
-from models.main import user_knn, most_popular
+from models.main import user_knn, most_popular, light_fm
 
 
 class RecoResponse(BaseModel):
@@ -89,6 +89,8 @@ async def get_reco(
             reco = list(set(reco))[:10]
     elif model_name == "most_popular":
         reco = most_popular.predict([user_id], n_recs=k_recs)
+    elif model_name == "light_fm":
+        reco = light_fm.predict(user_id, n_recs=k_recs)
     else:
         raise ModelNotFoundError(
             error_message=f"Model {model_name} is not found"

@@ -5,7 +5,8 @@ def fake_hash_password(password: str):
 MODEL_NAMES = [
     'homework_1',
     'user_knn',
-    'popular'
+    'most_popular',
+    'light_fm'
 ]
 
 fake_users_db = {
